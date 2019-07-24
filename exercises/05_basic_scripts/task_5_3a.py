@@ -1,23 +1,27 @@
-# -*- coding: utf-8 -*-
-'''
-Задание 5.3a
+#!/usr/bin/env python
+from sys import argv
 
-Дополнить скрипт из задания 5.3 таким образом, чтобы, в зависимости от выбранного режима,
-задавались разные вопросы в запросе о номере VLANа или списка VLANов:
-* для access: 'Введите номер VLAN:'
-* для trunk: 'Введите разрешенные VLANы:'
-
-Ограничение: Все задания надо выполнять используя только пройденные темы.
-То есть эту задачу можно решить без использования условия if и циклов for/while.
-'''
 
 access_template = [
     'switchport mode access', 'switchport access vlan {}',
     'switchport nonegotiate', 'spanning-tree portfast',
     'spanning-tree bpduguard enable'
 ]
+access_template = '\n'.join(access_template)
 
 trunk_template = [
     'switchport trunk encapsulation dot1q', 'switchport mode trunk',
     'switchport trunk allowed vlan {}'
 ]
+trunk_template = '\n'.join(trunk_template)
+
+question = {'access': 'Введите номер VLAN:', 'trunk': 'Введите разрешенные VLANы:'}
+
+
+template = {'access': access_template, 'trunk': trunk_template}
+inttype = input ('Введите режим работы интерфейса (access/trunk): ')
+intnum = input ('Введите тип и номер интерфейса: ')
+vlans = input(question[inttype])
+
+print('interface {}'.format(intnum))
+print(template[inttype].format(vlans))

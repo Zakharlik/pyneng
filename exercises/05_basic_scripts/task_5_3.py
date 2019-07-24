@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+from sys import argv
+
 '''
 Задание 5.3
 
@@ -50,8 +52,18 @@ access_template = [
     'switchport nonegotiate', 'spanning-tree portfast',
     'spanning-tree bpduguard enable'
 ]
+access_template = '\n'.join(access_template)
 
 trunk_template = [
     'switchport trunk encapsulation dot1q', 'switchport mode trunk',
     'switchport trunk allowed vlan {}'
 ]
+trunk_template = '\n'.join(trunk_template)
+
+template = {'access': access_template, 'trunk': trunk_template}
+inttype = input ('Введите режим работы интерфейса (access/trunk): ')
+intnum = input ('Введите тип и номер интерфейса: ')
+vlans = input('Введите номер влан(ов): ')
+
+print('interface {}'.format(intnum))
+print(template[inttype].format(vlans))
