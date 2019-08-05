@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
 Задание 7.3
@@ -17,3 +18,8 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 '''
+with open('CAM_table.txt','r') as fil:
+    for line in fil:
+        if (line.startswith(' ') and line[1]!=' '):
+            vlan, mac, _, port = line.split()
+            print('{:5}{:20}{:10}'.format(vlan, mac, port))
