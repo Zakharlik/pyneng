@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.7
 
 london_co = {
     'r1': {
@@ -31,4 +31,4 @@ print('Введите имя параметра (',
 	  ', '.join(list(london_co[device_name].keys())),
 	  '):')
 param = input()
-print(london_co[device_name].setdefault(param,'Такого параметра нет'))
+print(london_co[device_name].get(param,'Такого параметра нет'))
