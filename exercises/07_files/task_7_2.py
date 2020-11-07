@@ -21,4 +21,4 @@ fname = argv[1]
 with open(fname,'r') as fil:
     for line in fil:
         if not line.startswith('!'):
-            print(line.strip())
+            print(line.rstrip())

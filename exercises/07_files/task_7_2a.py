@@ -24,8 +24,9 @@ with open(fname,'r') as fil:
         if not line.startswith('!'):
 #            if not set(ignore).intersection(set(line.split())):
             prt = True
-            for i in range(len(ignore)):
-                if line.find(ignore[i]) >= 0:
+            for ignore_word in ignore:
+                if ignore_word in line:
                     prt = False
+                    break
             if prt:
-                print(line.strip())
+                print(line.rstrip())
