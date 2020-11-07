@@ -14,7 +14,7 @@ Outbound Interface:    FastEthernet0/0
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 '''
-
+output = '{:25} {}\n' * 6
 
 with open('ospf.txt','r') as infile:
     for line in infile:
@@ -24,9 +24,10 @@ with open('ospf.txt','r') as infile:
             elif proto == 'I':
                 proto == 'IGRP'
             print('-'*44)
-            print('{:22} {:22}'.format("Protocol:",proto))
-            print('{:22} {:22}'.format("Prefix:",prefix))
-            print('{:22} {:22}'.format("AD/Metric:",ad[1:-1]))
-            print('{:22} {:22}'.format("Next-Hop:",nexthop[:-1]))
-            print('{:22} {:22}'.format("Last update:",lastupd[:-1]))
-            print('{:22} {:22}'.format("Outbound Interface",iface))
+            print(output.format(
+                "Protocol:",proto,
+                "Prefix:",prefix,
+                "AD/Metric:",ad[1:-1],
+                "Next-Hop:",nexthop[:-1],
+                "Last update:",lastupd[:-1],
+                "Outbound Interface",iface))
