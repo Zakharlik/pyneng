@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
 Задание 7.3b
@@ -11,3 +12,11 @@
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 
 '''
+user_vlan = input('Please enter VLAN number:')
+user_vlan = int(user_vlan.strip())
+with open('CAM_table.txt','r') as fil:
+    for line in fil:
+        if (line.startswith(' ') and line[1]!=' '):
+            vlan, mac, _, port = line.split()
+            if user_vlan == int(vlan):
+                print(f'{vlan:<7}{mac:20}{port:10}')
