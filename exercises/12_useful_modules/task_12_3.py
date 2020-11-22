@@ -26,7 +26,7 @@ Reachable    Unreachable
 import argparse
 import subprocess
 import ipaddress
-import tabulate
+from tabulate import tabulate
 
 
 def convert_ranges_to_ip_list(ip_list):
@@ -71,11 +71,14 @@ def ping_ip_addresses(ip_list):
     
 def print_ip_table(ip_list):
     table = ping_ip_addresses(convert_ranges_to_ip_list(ip_list))
-    print(table[0])
-    print('-'*10)
-    print(table[1])
-    dict_table ={'Reachable': table[0], 'Unreachable': table[1]}
-    print(tabulate(dict_table))
+#    table = (['10.40.1.1', '10.40.2.1', '10.40.2.2', '10.40.2.4', '10.40.2.5', '10.40.2.9', '10.40.0.21'],
+#            ['10.40.2.3', '10.40.2.6', '10.40.2.7', '10.40.2.8', '10.40.2.10', '10.40.0.20', '10.40.0.25'])
+ #   new_table = [('Reachable', 'Unreachable')]
+ #   for i in range(max(len(table[0]),len(table[1]))):
+ #       new_table.append((table[0][i], table[1][i]))
+    dict_table = {'Reachable': table[0], 'Unreachable': table[1]}
+#    print(tabulate(table))
+    print(tabulate(dict_table, headers = 'keys'))
     
 if __name__ == '__main__':
     print_ip_table(['10.40.1.1', '10.40.2.1-10', '10.40.0.20-10.40.0.25'])
