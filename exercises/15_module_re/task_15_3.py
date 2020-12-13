@@ -31,3 +31,20 @@ object network LOCAL_10.1.9.5
 
 Во всех правилах для ASA интерфейсы будут одинаковыми (inside,outside).
 """
+
+import re
+
+def convert_ios_nat_to_asa(f_ios, f_asa):
+    f_out = open(f_asa, 'w')
+    with open(f_ios, 'r') as f_in:
+        for line in f_in:
+#            record = re.search('static\s(?P<proto>\S+)\s(?P<ip>\S+)\s(?P<d_port>\d+)\S+\s\S+\s(?P<s_port>\d+)', line)
+            record = re.search('static\s(?P<proto>\S+)\s(?P<ip>\S+)\s(?P<d_port>\d+)\s\S+\s\S+\s(?P<s_port>\d+)', line)
+            print(record)
+            f_out.write(f"object network LOCAL_{record.group('ip')}\n"
+                        f" host {record.group('ip')}\n"
+                        f" nat (inside,outside) static interface service {record.group('proto')} {record.group('d_port')} {record.group('s_port')}\n")
+    f_out.close()
+
+if __name__ == "__main__":
+    convert_ios_nat_to_asa('cisco_nat_config.txt', 'asa_nat_config.txt')
