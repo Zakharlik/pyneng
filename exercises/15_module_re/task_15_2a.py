@@ -33,3 +33,16 @@ data = [
     ("R2", "15.2(2)T1", "Cisco 2911"),
     ("SW1", "12.2(55)SE9", "Cisco WS-C2960-8TC-L"),
 ]
+
+def convert_to_dict(header, data):
+    result = []
+    for tu in data:
+#        di = {}
+#        for key in range(len(headers)):
+#            di[header[key]] = tu[key]
+#        result.append(di)
+        result.append({header[key]: tu[key] for key in range(len(header))})
+    return result
+    
+if __name__ == '__main__':
+    print(convert_to_dict(headers, data))
