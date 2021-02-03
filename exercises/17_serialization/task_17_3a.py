@@ -32,3 +32,32 @@
 Проверить работу параметра save_to_filename и записать итоговый словарь в файл topology.yaml.
 
 """
+import yaml
+import re
+
+def generate_topology_from_cdp(list_of_files, save_to_filename=None):
+    neighbors_dict = {}
+    for file in list_of_files:
+        with open(file, 'r') as f:
+            neighbors_list = {}
+            for line in f:
+                if '>' in line:
+                    hostname = re.search('^(\S+)>',line).group(1)
+                match = re.search('(?P<device>\S+)\s+(?P<local_if>\S+\s\d\S+)\s+\S+\S+[\S\s]+\s+\S+\s+(?P<rem_if>\S+\s\S+)',line)
+                if match:
+                    neighbors_list[match.group('local_if')] = {match.group('device') : match.group('rem_if')}
+#               print(neighbors_list)
+        neighbors_dict[hostname] = neighbors_list
+    if save_to_filename:
+        print('Savin file', save_to_filename)
+        with open(save_to_filename, 'w') as wf:
+            yaml.dump(neighbors_dict, wf, default_flow_style=False)
+    return neighbors_dict
+
+
+if __name__ == '__main__':
+    device_list = ('sh_cdp_n_sw1.txt', 'sh_cdp_n_r1.txt',
+                    'sh_cdp_n_r2.txt', 'sh_cdp_n_r3.txt',
+                    'sh_cdp_n_r4.txt', 'sh_cdp_n_r5.txt',
+                    'sh_cdp_n_r6.txt')
+    print(generate_topology_from_cdp(device_list, 'topology.yaml'))
