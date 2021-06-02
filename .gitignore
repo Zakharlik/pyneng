@@ -30,3 +30,9 @@ Thumbs.db
 *.un~
 *.pyc
 *.swp
+
+#Venv
+bin
+lib  
+pyvenv.cfg
+
