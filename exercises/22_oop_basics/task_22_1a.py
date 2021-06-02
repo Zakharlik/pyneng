@@ -10,18 +10,6 @@
 """
 
 class Topology:
-    def __init__(self, topology):
-        temp_topo = dict()
-        for link in topology:
-            if link > topology[link]:
-                temp_topo[topology[link]] = link
-            else:
-                temp_topo[link] = topology[link]
-        self.topology = temp_topo
-
-
-
-class Topology:
 
     def _normalize(self, topology_dict):
         temp_topo = dict()
