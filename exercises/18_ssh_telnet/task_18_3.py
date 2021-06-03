@@ -50,3 +50,45 @@ Out[16]: 'config term\nEnter configuration commands, one per line.  End with CNT
 
 commands = ["logging 10.255.255.1", "logging buffered 20010", "no logging console"]
 command = "sh ip int br"
+
+
+import yaml
+from netmiko import (
+    ConnectHandler,
+    NetmikoTimeoutException,
+    NetmikoAuthenticationException,
+)
+
+def send_commands(device, metod):
+    result = {}
+    show
+    if show:
+        try:
+            with ConnectHandler(**device) as ssh:
+                ssh.enable()
+                output = ssh.send_command(show)
+                result = output
+            return result
+        except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
+            print(error)
+    if config:
+        result = ''
+        try:
+            with ConnectHandler(**device) as ssh:
+                ssh.enable()
+                for command in config:
+                    bad_flag = False
+                    output = ssh.send_config_set(command)
+            return output
+        except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
+            print(error)
+
+if __name__ == "__main__":
+    command = "sh ip int br"
+    with open("devices.yaml") as f:
+        dev = yaml.safe_load(f)
+
+    print(send_commands(dev[0], command))
+#    print(send_commands(dev[1], show=command))
+#    print(send_commands(dev[2], config=commands))
+#    print(send_commands(dev[0], show=command, config=commands))
