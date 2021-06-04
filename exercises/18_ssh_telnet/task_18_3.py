@@ -59,7 +59,7 @@ from netmiko import (
     NetmikoAuthenticationException,
 )
 
-def send_commands(device, metod):
+def send_commands(device, *, show='', config=''):
     result = {}
     show
     if show:
