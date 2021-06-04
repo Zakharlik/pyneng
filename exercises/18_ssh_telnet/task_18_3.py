@@ -53,36 +53,21 @@ command = "sh ip int br"
 
 
 import yaml
-from netmiko import (
-    ConnectHandler,
-    NetmikoTimeoutException,
-    NetmikoAuthenticationException,
-)
+
+
+from task_18_1 import send_show_command
+from task_18_2 import send_config_commands
 
 def send_commands(device, *, show='', config=''):
-    result = {}
+    result = None
     if show and config:
         raise ValueError("Only show or config available. Not a both at same time")
     elif show:
-        try:
-            with ConnectHandler(**device) as ssh:
-                ssh.enable()
-                output = ssh.send_command(show)
-                result = output
-            return result
-        except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
-            print(error)
+        result = send_show_command(device, show)
     elif config:
-        result = ''
-        try:
-            with ConnectHandler(**device) as ssh:
-                ssh.enable()
-                for command in config:
-                    bad_flag = False
-                    output = ssh.send_config_set(command)
-            return output
-        except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
-            print(error)
+        result = send_config_commands(device, config)
+    return result
+
 
 if __name__ == "__main__":
     command = "sh ip int br"
