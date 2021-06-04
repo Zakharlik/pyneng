@@ -61,8 +61,9 @@ from netmiko import (
 
 def send_commands(device, *, show='', config=''):
     result = {}
-    show
-    if show:
+    if show and config:
+        raise ValueError("Only show or config available. Not a both at same time")
+    elif show:
         try:
             with ConnectHandler(**device) as ssh:
                 ssh.enable()
@@ -71,7 +72,7 @@ def send_commands(device, *, show='', config=''):
             return result
         except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
             print(error)
-    if config:
+    elif config:
         result = ''
         try:
             with ConnectHandler(**device) as ssh:
