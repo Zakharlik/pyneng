@@ -28,7 +28,7 @@ london_co = {
 
 device_name = input('Введите имя устройства:')
 print('Введите имя параметра (',
-	  ', '.join(list(london_co[device_name].keys())),
-	  '):')
+      ', '.join(list(london_co[device_name].keys())),
+      '):')
 param = input()
-print(london_co[device_name].get(param,'Такого параметра нет'))
+print(london_co[device_name].get(param, 'Такого параметра нет'))

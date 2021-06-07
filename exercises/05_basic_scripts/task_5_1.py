@@ -13,7 +13,8 @@
 Пример выполнения скрипта:
 $ python task_5_1.py
 Введите имя устройства: r1
-{'location': '21 New Globe Walk', 'vendor': 'Cisco', 'model': '4451', 'ios': '15.4', 'ip': '10.255.0.1'}
+{'location': '21 New Globe Walk', 'vendor': 'Cisco',
+ 'model': '4451', 'ios': '15.4', 'ip': '10.255.0.1'}
 
 Ограничение: нельзя изменять словарь london_co.
 

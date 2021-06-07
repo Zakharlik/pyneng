@@ -16,18 +16,18 @@ Outbound Interface:    FastEthernet0/0
 '''
 output = '{:25} {}\n' * 6
 
-with open('ospf.txt','r') as infile:
+with open('ospf.txt', 'r') as infile:
     for line in infile:
-            proto, prefix, ad, _, nexthop, lastupd, iface = line.split()
-            if proto == 'O':
-                proto = 'OSPF'
-            elif proto == 'I':
-                proto == 'IGRP'
-            print('-'*44)
-            print(output.format(
-                "Protocol:",proto,
-                "Prefix:",prefix,
-                "AD/Metric:",ad[1:-1],
-                "Next-Hop:",nexthop[:-1],
-                "Last update:",lastupd[:-1],
-                "Outbound Interface",iface))
+        proto, prefix, ad, _, nexthop, lastupd, iface = line.split()
+        if proto == 'O':
+            proto = 'OSPF'
+        elif proto == 'I':
+            proto == 'IGRP'
+        print('-' * 44)
+        print(output.format(
+              "Protocol:", proto,
+              "Prefix:", prefix,
+              "AD/Metric:", ad[1:-1],
+              "Next-Hop:", nexthop[:-1],
+              "Last update:", lastupd[:-1],
+              "Outbound Interface", iface))

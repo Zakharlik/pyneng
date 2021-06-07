@@ -15,12 +15,13 @@ trunk_template = [
 ]
 trunk_template = '\n'.join(trunk_template)
 
-question = {'access': 'Введите номер VLAN:', 'trunk': 'Введите разрешенные VLANы:'}
+question = {'access': 'Введите номер VLAN:',
+            'trunk': 'Введите разрешенные VLANы:'}
 
 
 template = {'access': access_template, 'trunk': trunk_template}
-inttype = input ('Введите режим работы интерфейса (access/trunk): ')
-intnum = input ('Введите тип и номер интерфейса: ')
+inttype = input('Введите режим работы интерфейса (access/trunk): ')
+intnum = input('Введите тип и номер интерфейса: ')
 vlans = input(question[inttype])
 
 print('interface {}'.format(intnum))

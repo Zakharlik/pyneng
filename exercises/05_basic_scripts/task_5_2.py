@@ -22,17 +22,17 @@ Mask:
 Ограничение: Все задания надо выполнять используя только пройденные темы.
 '''
 ipmask = input('IP/mask:')
-#ipmask = '10.40.1.9/22'
+# ipmask = '10.40.1.9/22'
 ip_str, mask = ipmask.split('/')
 
 mask_str = '1' * int(mask) + '0' * (32 - int(mask))
 mask_bin = [int(mask_str[0:8], 2),
-			int(mask_str[8:16], 2),
-			int(mask_str[16:24], 2),
-			int(mask_str[24:32], 2)]
+            int(mask_str[8:16], 2),
+            int(mask_str[16:24], 2),
+            int(mask_str[24:32], 2)]
 
 ip_dec_str = ip_str.split('.')
-ip_dec=[]
+ip_dec = []
 ip_dec.append(int(ip_dec_str[0]))
 ip_dec.append(int(ip_dec_str[1]))
 ip_dec.append(int(ip_dec_str[2]))

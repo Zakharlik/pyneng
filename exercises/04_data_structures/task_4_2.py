@@ -9,4 +9,4 @@
 '''
 
 mac = 'AAAA:BBBB:CCCC'
-print(mac.replace(':','.'))
+print(mac.replace(':', '.'))

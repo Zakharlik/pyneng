@@ -13,16 +13,16 @@
 
 '''
 
+from sys import argv
+
 ignore = ['duplex', 'alias', 'Current configuration']
 
-from sys import argv
 
 fname = argv[1]
 
-with open(fname,'r') as fil:
+with open(fname, 'r') as fil:
     for line in fil:
         if not line.startswith('!'):
-#            if not set(ignore).intersection(set(line.split())):
             prt = True
             for ignore_word in ignore:
                 if ignore_word in line:

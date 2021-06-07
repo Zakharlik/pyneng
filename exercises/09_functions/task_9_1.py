@@ -2,7 +2,8 @@
 """
 Задание 9.1
 
-Создать функцию generate_access_config, которая генерирует конфигурацию для access-портов.
+Создать функцию generate_access_config, которая генерирует конфигурацию
+для access-портов.
 
 Функция ожидает такие аргументы:
 
@@ -10,16 +11,19 @@
     {'FastEthernet0/12': 10,
      'FastEthernet0/14': 11,
      'FastEthernet0/16': 17}
-- шаблон конфигурации access-портов в виде списка команд (список access_mode_template)
+- шаблон конфигурации access-портов в виде списка команд (список
+    access_mode_template)
 
 Функция должна возвращать список всех портов в режиме access
 с конфигурацией на основе шаблона access_mode_template.
 В конце строк в списке не должно быть символа перевода строки.
 
-В этом задании заготовка для функции уже сделана и надо только продолжить писать само тело функции.
+В этом задании заготовка для функции уже сделана и надо только продолжить
+писать само тело функции.
 
 
-Пример итогового списка (перевод строки после каждого элемента сделан для удобства чтения):
+Пример итогового списка (перевод строки после каждого элемента сделан
+для удобства чтения):
 [
 'interface FastEthernet0/12',
 'switchport mode access',
@@ -35,8 +39,10 @@
 'spanning-tree bpduguard enable',
 ...]
 
-Проверить работу функции на примере словаря access_config и списка команд access_mode_template.
-Если предыдущая проверка прошла успешно, проверить работу функции еще раз на словаре access_config_2
+Проверить работу функции на примере словаря access_config и списка
+команд access_mode_template.
+Если предыдущая проверка прошла успешно, проверить работу функции еще раз
+на словаре access_config_2
 и убедится, что в итоговом списке правильные номера интерфейсов и вланов.
 
 Ограничение: Все задания надо выполнять используя только пройденные темы.
@@ -51,7 +57,8 @@ access_mode_template = [
     "spanning-tree bpduguard enable",
 ]
 
-access_config = {"FastEthernet0/12": 10, "FastEthernet0/14": 11, "FastEthernet0/16": 17}
+access_config = {"FastEthernet0/12": 10, "FastEthernet0/14": 11,
+                 "FastEthernet0/16": 17}
 
 access_config_2 = {
     "FastEthernet0/03": 100,
@@ -68,7 +75,8 @@ def generate_access_config(intf_vlan_mapping, access_template):
          'FastEthernet0/16':17}
     access_template - список команд для порта в режиме access
 
-    Возвращает список всех портов в режиме access с конфигурацией на основе шаблона
+    Возвращает список всех портов в режиме access с конфигурацией на основе
+    шаблона
     """
     result = []
     for iface, vlan in intf_vlan_mapping.items():
@@ -79,5 +87,6 @@ def generate_access_config(intf_vlan_mapping, access_template):
             else:
                 result.append(line)
     return result
+
 
 print(generate_access_config(access_config, access_mode_template))

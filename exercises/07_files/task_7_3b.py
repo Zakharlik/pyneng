@@ -14,9 +14,9 @@
 '''
 user_vlan = input('Please enter VLAN number:')
 user_vlan = int(user_vlan.strip())
-with open('CAM_table.txt','r') as fil:
+with open('CAM_table.txt', 'r') as fil:
     for line in fil:
-        if (line.startswith(' ') and line[1]!=' '):
+        if (line.startswith(' ') and line[1] != ' '):
             vlan, mac, _, port = line.split()
             if user_vlan == int(vlan):
                 print(f'{vlan:<7}{mac:20}{port:10}')
