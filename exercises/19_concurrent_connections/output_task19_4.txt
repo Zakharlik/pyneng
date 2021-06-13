@@ -1,0 +1,18 @@
+R1#router ospf 10
+config term
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#router ospf 10
+R1(config-router)#end
+R1#
+R2#router ospf 10
+config term
+Enter configuration commands, one per line.  End with CNTL/Z.
+R2(config)#router ospf 10
+R2(config-router)#end
+R2#
+R3#router ospf 10
+config term
+Enter configuration commands, one per line.  End with CNTL/Z.
+R3(config)#router ospf 10
+R3(config-router)#end
+R3#

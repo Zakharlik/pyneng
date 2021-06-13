@@ -105,3 +105,57 @@ R3#
 
 Для выполнения задания можно создавать любые дополнительные функции.
 """
+
+from concurrent.futures import ThreadPoolExecutor
+from netmiko import (
+    ConnectHandler,
+    NetmikoTimeoutException,
+    NetmikoAuthenticationException,
+)
+import yaml
+from itertools import repeat
+
+
+def send_config_commands(device, commands):
+    try:
+        with ConnectHandler(**device) as ssh:
+            ssh.enable()
+            output = ssh.find_prompt()+commands+'\n'+ssh.send_config_set(commands)+'\n'
+            result = output
+        return result
+    except (NetmikoTimeoutException, NetmikoAuthenticationException) as error:
+        print(error)
+
+
+def send_show(device, command):
+    print(command)
+    with ConnectHandler(**device) as ssh:
+        ssh.enable()
+        result = ssh.find_prompt()+command+'\n'+ssh.send_command(command)+'\n'
+    return result
+
+
+def send_commands_to_devices(devices, filename, *, show=None, config=None, limit=3):
+    output = ''
+    if show and config:
+        raise ValueError("Only show or config available. Not a both at same time")
+    with ThreadPoolExecutor(max_workers=limit) as executor:
+        if show:
+            print(show)
+            output = executor.map(send_show, devices, repeat(show))
+        elif config:
+            output = executor.map(send_config_commands, devices, repeat(config))
+    with open(filename, 'w') as f:
+        for line in output:
+            f.write(line)
+
+
+if __name__ == '__main__':
+    with open('devices.yaml') as f:
+        devices = yaml.safe_load(f)
+#    send_command_to_devices(devices, 'output_task19_4.txt', show='show ip int bri')
+    send_commands_to_devices(devices, 'output_task19_4.txt', config='router ospf 10')
+
+
+
+
