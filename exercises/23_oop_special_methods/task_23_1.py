@@ -43,7 +43,7 @@ In [6]: ip1 = IPAddress('10.1.1.1/240')
 ValueError: Incorrect mask
 
 """
-class IPAddres:
+class IPAddress:
    def isIpCorrct(self, ipAddress):
       octets = ipAddress.split('.')
       isIpCorrect = True;
@@ -68,18 +68,19 @@ class IPAddres:
          raise ValueError('Incorrect mask')
       print('Mask checked')
       return True
-   
+
    def isAddressMaskCorrect(self, ipAddressMask):
       self.ip, self.mask = ipAddressMask.split('/')
+      self.mask = int(self.mask)
       if self.isIpCorrct(self.ip) and self.isMaskCorrect(self.mask):
          return True
 
    def __init__(self, ipAddressMask):
       res = self.isAddressMaskCorrect(ipAddressMask)
-       
+
 
 
 if __name__ == "__main__":
-   ip1 = IPAddres('100.1.1.1/240')
+   ip1 = IPAddress('100.1.1.1/24')
    print(ip1.ip)
    print(ip1.mask)

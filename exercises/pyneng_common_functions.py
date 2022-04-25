@@ -1,10 +1,14 @@
 import csv
 import inspect
-from platform import system as system_name
-from subprocess import run, PIPE
-from concurrent.futures import ThreadPoolExecutor
+import os
 import re
+from concurrent.futures import ThreadPoolExecutor
+from platform import system as system_name
+from subprocess import PIPE, run
 
+import textfsm
+from _pytest.assertion.rewrite import AssertionRewritingHook
+from jinja2 import Environment, FileSystemLoader
 
 stdout_incorrect_warning = """
 Сообщение отличается от указанного в задании.
@@ -13,20 +17,37 @@ stdout_incorrect_warning = """
 """
 
 
+def unified_columns_output(output):
+    output = delete_empty_lines(output)
+    lines = [re.split(r"  +", line.strip()) for line in output.strip().split("\n")]
+    formatted = [("{:25}" * len(line)).format(*line) for line in lines]
+    return "\n".join(formatted)
+
+
+def delete_empty_lines(output):
+    output = output.replace("\r\n", "\n")
+    lines = []
+    for line in output.strip().split("\n"):
+        if line.strip():
+            lines.append(line.rstrip())
+    return "\n".join(lines)
+
+
 def check_attr_or_method(obj, attr=None, method=None):
     if attr:
-        assert getattr(obj, attr, None) != None, "Переменная не найдена"
+        assert getattr(obj, attr, None) is not None, "Переменная не найдена"
         assert not inspect.ismethod(
             getattr(obj, attr)
         ), f"{attr} должен быть переменной, а не методом"
     if method:
-        assert getattr(obj, method, None) != None, "Метод не найден"
+        assert getattr(obj, method, None) is not None, "Метод не найден"
         assert inspect.ismethod(
             getattr(obj, method)
         ), f"{method} должен быть методом, а не переменной"
 
 
 def strip_empty_lines(output):
+    output = output.replace("\r\n", "\n")
     lines = []
     for line in output.strip().split("\n"):
         line = line.strip()
@@ -70,7 +91,7 @@ def get_func_params_default_value(function):
 def ping(host):
     param = "-n" if system_name().lower() == "windows" else "-c"
     command = ["ping", param, "1", host]
-    reply = run(command, stdout=PIPE, stderr=PIPE, encoding="utf-8")
+    reply = run(command, stdout=PIPE, stderr=PIPE)
     return reply.returncode == 0
 
 
@@ -95,3 +116,26 @@ def unify_topology_dict(topology_dict):
     }
     return unified_topology_dict
 
+
+def render_jinja_template(template, data_dict):
+    templ_dir, templ_file = os.path.split(template)
+    env = Environment(
+        loader=FileSystemLoader(templ_dir), trim_blocks=True, lstrip_blocks=True
+    )
+    templ = env.get_template(templ_file)
+    return templ.render(data_dict)
+
+
+def get_textfsm_output(template, command_output):
+    with open(template) as tmpl:
+        parser = textfsm.TextFSM(tmpl)
+        header = parser.header
+        result = parser.ParseText(command_output)
+    return [header] + result
+
+
+def check_pytest(loader, file):
+    """Проверка что тест вызван через pytest ..., а не python ..."""
+    if not isinstance(loader, AssertionRewritingHook):
+        print("Тесты нужно вызывать используя такое выражение:"
+              f"\npytest {file}\n\n")
