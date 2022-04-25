@@ -69,8 +69,7 @@ def generate_trunk_config(intf_vlan_mapping, trunk_template):
         for line in trunk_template:
             if line.endswith('vlan'):
                 outline = ''
-                line += f' {",".join(str(item) for item
-                            in intf_vlan_mapping[intf])}'
+                line += f' {",".join(str(item) for item in intf_vlan_mapping[intf])}'
             result.append(line)
     return result
 

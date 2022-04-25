@@ -31,7 +31,7 @@ In [12]: print(ip_list)
 [IPAddress('10.1.1.1/24')]
 
 """
-class IPAddres:
+class IPAddress:
   def isIpCorrct(self, ipAddress):
     octets = ipAddress.split('.')
     isIpCorrect = True;
@@ -59,6 +59,7 @@ class IPAddres:
 
   def isAddressMaskCorrect(self, ipAddressMask):
     self.ip, self.mask = ipAddressMask.split('/')
+    self.mask = int(self.mask)
     if self.isIpCorrct(self.ip) and self.isMaskCorrect(self.mask):
       return True
 
@@ -67,12 +68,12 @@ class IPAddres:
 
   def __str__(self) -> str:
       return f'IP address {self.ip}/{self.mask}'
-  
+
   def __repr__(self) -> str:
-      return f"IP address('{self.ip}/{self.mask}')"
+      return f"IPAddress('{self.ip}/{self.mask}')"
 
 if __name__ == "__main__":
-  ip1 = IPAddres('100.1.1.1/24')
+  ip1 = IPAddress('100.1.1.1/24')
   print(ip1)
   ip_list = []
   ip_list.append(ip1)
