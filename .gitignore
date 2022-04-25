@@ -36,3 +36,8 @@ bin
 lib  
 pyvenv.cfg
 
+#VenvWindows
+Include
+Lib
+Scripts
+.gitignore
