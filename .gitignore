@@ -41,3 +41,4 @@ Include
 Lib
 Scripts
 .gitignore
+.venv
