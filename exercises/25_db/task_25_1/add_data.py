@@ -26,7 +26,6 @@ def readSwitchesFile(switchesFileName):
     """
     with open(switchesFileName, 'r') as switchesFile:
         switchesList = yaml.safe_load(switchesFile)
-        print(switchesList['switches'])
     return switchesList['switches']
 
 def insertData(tableName, dbFileName, dataList):
@@ -58,8 +57,9 @@ def insertSwitchesData(tableName, dbFileName, dataDict):
     dataDict - list of dicts.
     """
     conn = sqlite3.connect(dbFileName)
-        for item in dataDict:
-            query = f"insert into {tableName} values {item}, {item.value})"
+    try:
+        for item, value in dataDict.items():
+            query = f"insert into {tableName} values ('{item}', '{value}')"
             try:
                 with conn:
                     conn.execute(query)
@@ -69,13 +69,30 @@ def insertSwitchesData(tableName, dbFileName, dataDict):
     except Exception as e:
         print('Неправильный список!!', e)
 
+def insertDhcpData(tableName, dbFileName, dataList, swName ):
+    """
+    Inserts data from 'dataList' to 'tableName' table in DB.
+    tableName - string - Name of table
+    dataList - list of lists. Rectangle matrix. Internal lists is a row in table.
+               Each row must contains exect the same number of items.
+    swName - name of switch
+    """
+    conn = sqlite3.connect(dbFileName)
+    for row in dataList:
+        try:
+            query = f"insert into {tableName} values (?, ?, ?, ?, '{swName}')"
+            try:
+                with conn:
+                    conn.execute(query, row)
+            except sqlite3.IntegrityError as e:
+                print ('Error code: ', e)
+        except Exception as e:
+            print('Неправильный список!!', e)
+    conn.close()
+
 
 if __name__ == '__main__':
-    insertData('switches', 'dhcp_snooping.db', readSwitchesFile('switches.yml'))
+    insertSwitchesData('switches', 'dhcp_snooping.db', readSwitchesFile('switches.yml'))
     for file in os.listdir():
         if file.startswith('sw') and file.endswith('.txt'):
-            dataList = [file[:3]]
-            for item in readDataFile(file):
-                dataList.append(item)
-            print(dataList)
-            insertData('dhcp', 'dhcp_snooping.db', dataList)
+            insertDhcpData('dhcp', 'dhcp_snooping.db', readDataFile(file), file[:3])
