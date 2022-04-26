@@ -4,7 +4,6 @@
 с нескольки коммутаторов"
 """
 import os
-import re
 import sqlite3
 
 def isDbExists(fileName):
